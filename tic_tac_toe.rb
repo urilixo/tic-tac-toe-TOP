@@ -5,21 +5,24 @@ class TicTacToe
   attr_accessor :player_one, :player_two
 
   def initialize
-    create_board
+    @board = create_board
     @turn = 'X'
     @turn_count = 0
-    puts 'First player name: '
-    @player_one = gets.chomp
-    puts 'Second player name: '
-    @player_two = gets.chomp
+    @player_one = player_name
+    @player_two = player_name
     @victory = false
-    game_loop
   end
 
-  private
+  def player_name
+    puts 'Type first player name:' unless defined?(@player_one)
+    puts 'Type second player name: ' if defined?(@player_one)
+    gets.chomp
+  end
+
+  #private
 
   def create_board
-    @board = [[7, 8, 9], [4, 5, 6], [1, 2, 3]]
+    [[7, 8, 9], [4, 5, 6], [1, 2, 3]]
   end
 
   def display_board
@@ -45,28 +48,6 @@ class TicTacToe
     @turn == 'X' ? @player_one : @player_two
   end
 
-  def board_condition 
-    if @board[0][0] == @board[0][1] && @board[0][1] == @board[0][2]
-      victory
-    elsif @board[1][0] == @board[1][1] && @board[1][1] == @board[1][2] 
-      victory
-    elsif @board[2][0] == @board[2][1] && @board[2][1] == @board[2][2]
-      victory
-    elsif @board[0][0] == @board[1][1] && @board[1][1] == @board[2][2] 
-      victory
-    elsif @board[2][0] == @board[1][1] && @board[1][1] == @board[0][2] 
-      victory
-    elsif @board[0][0] == @board[1][0] && @board[1][0] == @board[2][0]
-      victory
-    elsif @board[0][1] == @board[1][1] && @board[1][1] == @board[2][1]
-      victory
-    elsif @board[0][2] == @board[1][2] && @board[1][2] == @board[0][2]
-      victory
-    elsif @turn_count == 9
-      draw
-    end
-  end
-
   def victory
     @victory = true
     end_turn
@@ -88,6 +69,22 @@ class TicTacToe
       end
     end
     puts 'Invalid move.'
+    'error'
+  end
+
+  def board_condition
+    if (@board[0][0] == @board[0][1] && @board[0][1] == @board[0][2]) ||
+       (@board[1][0] == @board[1][1] && @board[1][1] == @board[1][2]) ||
+       (@board[2][0] == @board[2][1] && @board[2][1] == @board[2][2]) ||
+       (@board[0][0] == @board[1][1] && @board[1][1] == @board[2][2]) ||
+       (@board[2][0] == @board[1][1] && @board[1][1] == @board[0][2]) ||
+       (@board[0][0] == @board[1][0] && @board[1][0] == @board[2][0]) ||
+       (@board[0][1] == @board[1][1] && @board[1][1] == @board[2][1]) ||
+       (@board[0][2] == @board[1][2] && @board[1][2] == @board[0][2])
+      victory
+    elsif @turn_count == 9
+      draw
+    end
   end
 
   def game_loop
